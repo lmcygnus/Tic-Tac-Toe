@@ -2,10 +2,6 @@ const createPlayer = (mark) => {
     return {mark};
 }
 
-const drawMark = (element, mark) => {
-    element.textContent = mark;
-}
-
 const checkWinner = (squares, activePlayer) => {
     const winConditions = [
         [0, 1, 2],
@@ -39,7 +35,8 @@ const gameboard = (() => {
     let player1 = createPlayer("x");
     let player2 = createPlayer("o");
     let activePlayer = player1;
-    let squares = ["", "", "", "", "", "", "", "", ""];
+    let squares = ["", "", "", "", "", "", "", "", ""]; 
+    let gameWon = false;
 
     const switchTurn = () => {
         activePlayer = (activePlayer === player1) ? player2 : player1;
@@ -48,13 +45,13 @@ const gameboard = (() => {
     const updateDisplay = () => {
         displaySquares.forEach((square, index) => {
             square.addEventListener('click', () => {
-                if (squares[index] === "") {
-                    drawMark(square, activePlayer.mark);
+                if (!gameWon && squares[index] === "") {
+                    square.textContent = activePlayer.mark;
                     squares[index] = activePlayer.mark;
-
                     const winner = checkWinner(squares, activePlayer);
                     if (winner) {
                         message.textContent =`${winner.mark} has won the game.`;
+                        gameWon = true;
                     } 
                     else if (!squares.includes("") && !winner) {
                         message.textContent = "It's a tie!"
