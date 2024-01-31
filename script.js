@@ -1,43 +1,44 @@
 const displaySquares = document.querySelectorAll(".square");
-const message = document.querySelector(".message")
+const message = document.querySelector(".message");
+const reset = document.querySelector(".reset")
 
-const createPlayer = (name, mark) => {
-    return {name, mark};
+const createPlayer = (mark) => {
+    return {mark};
 }
 
-const game = (() => {
-    let player1 = createPlayer("x player", "x");
-    let player2 = createPlayer("o player", "o");
+const checkWinner = (squares, activePlayer) => {
+    const winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    for (const condition of winConditions) {
+        const [a, b, c] = condition;
+        if (
+            squares[a] !== "" &&
+            squares[a] === squares[b] &&
+            squares[a] === squares[c]
+        ) {
+            return activePlayer;
+        }
+    }
+    return null;
+};
+
+const gameboard = (() => {
+    let player1 = createPlayer("x");
+    let player2 = createPlayer("o");
     let activePlayer = player1;
     let squares = ["", "", "", "", "", "", "", "", ""];
 
     const switchTurn = () => {
         activePlayer = (activePlayer === player1) ? player2 : player1;
-    };
-
-    const checkWinner = () => {
-        const winConditions = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        for (const condition of winConditions) {
-            const [a, b, c] = condition;
-            if (
-                squares[a] !== "" &&
-                squares[a] === squares[b] &&
-                squares[a] === squares[c]
-            ) {
-                return activePlayer;
-            }
-        }
-        return null;
     };
 
     const updateDisplay = () => {
@@ -47,9 +48,9 @@ const game = (() => {
                     square.textContent = activePlayer.mark;
                     squares[index] = activePlayer.mark;
 
-                    const winner = checkWinner();
+                    const winner = checkWinner(squares, activePlayer);
                     if (winner) {
-                        console.log(`${winner.name} ha ganado el juego.`);
+                        message.textContent =`${winner.mark} has won the game.`;
                     } else {
                         switchTurn();
                     }
@@ -58,21 +59,24 @@ const game = (() => {
         });
     };
 
-    return { updateDisplay };
-})();
+    const restartGame = () => {
+        reset.addEventListener("click", () => {
+            displaySquares.forEach((square, index) => {
+                square.textContent = "";
+                squares = ["", "", "", "", "", "", "", "", ""];
+            });
+        })
+    }
 
-game.updateDisplay();
+    
 
-const gameboard = (() => {
-    const setdata = () => {
-        displaySquares.forEach((_, index) => {
-            displaySquares[index].setAttribute("data-number", index);
-        });
-        
-    };
-
-    return {setdata};
+    return { updateDisplay, restartGame };
 
 })();
-gameboard.setdata();
+
+gameboard.updateDisplay();
+gameboard.restartGame();
+
+
+
 
