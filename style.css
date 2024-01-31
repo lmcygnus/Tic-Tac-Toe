@@ -1,16 +1,49 @@
+:root{
+    --main-color: rgb(229, 255, 0) ;
+}
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: 'Press Start 2P', system-ui;
+    background-color: #131313;
 }
 .gameboard {
     display: flex;
-    width: 500px;
+    width: 400px;
     flex-wrap: wrap;
 }
-.square {
-    border: 1px dashed red;
-    min-width: 150px;
-    min-height: 150px;
+
+h1, .message {
+    color: var(--main-color);
+    margin-bottom: 40px;
 }
+
+.square {
+    border: 1px dashed var(--main-color) ;
+    min-width: 120px;
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4em;
+    color: var(--main-color);
+}
+.reset {
+    background-color: #13131300;
+    border: 1px solid var(--main-color);
+    color: var(--main-color);
+    padding: 1rem;
+    margin-top: 20px;
+    font-family: 'Press Start 2P', system-ui;
+}
+
+ .reset:hover {
+    filter: brightness(110%);
+    box-shadow: 5px 5px 10px -6px var(--main-color);
+}
+
+ .reset:active {
+    box-shadow: none;
+    transform: translate(3px, 3px);
+  }

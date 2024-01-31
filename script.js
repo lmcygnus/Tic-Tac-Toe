@@ -1,9 +1,9 @@
-const displaySquares = document.querySelectorAll(".square");
-const message = document.querySelector(".message");
-const reset = document.querySelector(".reset")
-
 const createPlayer = (mark) => {
     return {mark};
+}
+
+const drawMark = (element, mark) => {
+    element.textContent = mark;
 }
 
 const checkWinner = (squares, activePlayer) => {
@@ -32,6 +32,10 @@ const checkWinner = (squares, activePlayer) => {
 };
 
 const gameboard = (() => {
+    const displaySquares = document.querySelectorAll(".square");
+    const message = document.querySelector(".message");
+    const reset = document.querySelector(".reset");
+
     let player1 = createPlayer("x");
     let player2 = createPlayer("o");
     let activePlayer = player1;
@@ -45,13 +49,17 @@ const gameboard = (() => {
         displaySquares.forEach((square, index) => {
             square.addEventListener('click', () => {
                 if (squares[index] === "") {
-                    square.textContent = activePlayer.mark;
+                    drawMark(square, activePlayer.mark);
                     squares[index] = activePlayer.mark;
 
                     const winner = checkWinner(squares, activePlayer);
                     if (winner) {
                         message.textContent =`${winner.mark} has won the game.`;
-                    } else {
+                    } 
+                    else if (!squares.includes("") && !winner) {
+                        message.textContent = "It's a tie!"
+                    }
+                    else {
                         switchTurn();
                     }
                 }
@@ -64,11 +72,10 @@ const gameboard = (() => {
             displaySquares.forEach((square, index) => {
                 square.textContent = "";
                 squares = ["", "", "", "", "", "", "", "", ""];
+                message.textContent = "";
             });
         })
     }
-
-    
 
     return { updateDisplay, restartGame };
 
