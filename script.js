@@ -70,6 +70,7 @@ const gameboard = (() => {
                 square.textContent = "";
                 squares = ["", "", "", "", "", "", "", "", ""];
                 message.textContent = "";
+                gameWon = false;
             });
         })
     }
